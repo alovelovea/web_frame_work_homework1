@@ -30,6 +30,7 @@
         .btn-delete:hover { background: #c0392b; }
     </style>
 </head>
+
 <body>
 
     <h1>상품 상세 정보</h1>
@@ -101,6 +102,11 @@
             <button type="submit" class="btn-delete">삭제</button>
         </form>
     </div>
-
+<div style="margin-top: 50px;"></div> <hr>
+<footer style="text-align: center; padding: 20px 0; background-color: #f9f9f9; width: 100%;">
+    <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy년 MM월 dd일 (E) a hh:mm:ss') + ' | 학번: 2071162 | 성명: 박민재'}" 
+       style="font-size: 16px; color: #333; font-weight: bold;">
+    </p>
+</footer>
 </body>
 </html>

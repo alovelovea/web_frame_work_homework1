@@ -131,4 +131,19 @@ public class ProductRepository {
             entityManager.remove(product);
         }
     }
+// 1. 이름으로 검색할 때 카테고리 정보도 함께 가져오도록 수정
+public List<Product> findByNameContaining(String keyword) {
+    return entityManager.createQuery(
+            "SELECT p FROM Product p LEFT JOIN FETCH p.category WHERE p.name LIKE :keyword", Product.class)
+            .setParameter("keyword", "%" + keyword + "%")
+            .getResultList();
+}
+
+// 2. 카테고리 ID로 검색할 때도 마찬가지
+public List<Product> findByCategoryId(Long categoryId) {
+    return entityManager.createQuery(
+            "SELECT p FROM Product p LEFT JOIN FETCH p.category WHERE p.category.id = :cid", Product.class)
+            .setParameter("cid", categoryId)
+            .getResultList();
+}
 }

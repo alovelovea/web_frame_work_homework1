@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Category</title>
+</head>
+<body>
+    <h2>새 카테고리 등록</h2>
+
+    <form th:action="@{/categories/create}" th:object="${categoryForm}" method="post">
+        <div>
+            <label>카테고리 이름:</label>
+            <input type="text" th:field="*{name}" placeholder="카테고리명 입력" />
+            
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span>
+        </div>
+        <br>
+        <button type="submit">등록</button>
+        <a href="/categories">취소</a>
+    </form>
+
+    <hr style="margin-top: 50px;">
+    <footer style="text-align: center; padding: 20px 0; background-color: #f9f9f9;">
+        <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy년 MM월 dd일 (E) a hh:mm:ss') + ' | 학번: 2071162 | 성명: 박민재'}" 
+           style="font-size: 15px; color: #333; font-weight: bold;">
+        </p>
+    </footer>
+</body>
+</html>

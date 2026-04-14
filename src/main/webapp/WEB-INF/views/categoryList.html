@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Category List</title>
+    <style>
+        table { width: 50%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        .alert-success { color: green; font-weight: bold; }
+        .alert-error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>카테고리 관리</h2>
+
+    <p th:if="${successMessage}" th:text="${successMessage}" class="alert-success"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" class="alert-error"></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>카테고리명</th>
+                <th>관리</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cat : ${categories}">
+                <td th:text="${cat.id}"></td>
+                <td th:text="${cat.name}"></td>
+                <td>
+                    <form th:action="@{/categories/{id}/delete(id=${cat.id})}" method="post" 
+                          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                        <button type="submit">삭제</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/categories/create">새 카테고리 등록</a> | 
+    <a href="/products">상품 목록으로 이동</a>
+
+    <hr style="margin-top: 50px;">
+    <footer style="text-align: center; padding: 20px 0; background-color: #f9f9f9;">
+        <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy년 MM월 dd일 (E) a hh:mm:ss') + ' | 학번: 2071162 | 성명: 박민재'}" 
+           style="font-size: 15px; color: #333; font-weight: bold;">
+        </p>
+    </footer>
+</body>
+</html>

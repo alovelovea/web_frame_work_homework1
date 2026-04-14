@@ -37,9 +37,14 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    // 1. CategoryService 필드 추가
+    private final kr.ac.hansung.cse.service.CategoryService categoryService;
+    
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, 
+                             kr.ac.hansung.cse.service.CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
 
@@ -48,11 +53,36 @@ public class ProductController {
     // ─────────────────────────────────────────────────────────────────
 
     @GetMapping
-    public String listProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products", products);
-        return "productList";
+public String listProducts(
+        @RequestParam(required = false) String keyword,   // 검색창 입력값
+        @RequestParam(required = false) Long categoryId,  // 드롭다운 선택값
+        Model model) {
+    
+    List<Product> products;
+
+    // 1. 이름 검색어가 있으면 이름으로 검색
+    if (keyword != null && !keyword.isBlank()) {
+        products = productService.searchByName(keyword);
+    } 
+    // 2. 카테고리 필터가 선택되었으면 카테고리로 검색
+    else if (categoryId != null) {
+        products = productService.searchByCategory(categoryId);
+    } 
+    // 3. 둘 다 없으면 전체 목록 표시
+    else {
+        products = productService.getAllProducts();
     }
+
+    model.addAttribute("products", products);
+    // 검색창 옆 드롭다운에 뿌려줄 카테고리 전체 목록
+    model.addAttribute("categories", categoryService.getAllCategories());
+    
+    // 검색 후에도 입력값이 유지되도록 모델에 다시 담아줌
+    model.addAttribute("keyword", keyword);
+    model.addAttribute("categoryId", categoryId);
+    
+    return "productList";
+}
 
     // ─────────────────────────────────────────────────────────────────
     // GET /products/{id} - 상품 상세 조회
